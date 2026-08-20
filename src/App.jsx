@@ -4,34 +4,22 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import Masuk from './pages/Masuk';
-import DaftarPesananSaya from './pages/DaftarPesananSaya';
-import DetailPesanan from './pages/DetailPesanan';
-import DetailEventKatalog from './pages/DetailEventKatalog';
-import ScheduleCalendar from './pages/ScheduleCalendar';
-import DetailProduk from './pages/DetailProduk';
-import PesananBerhasil from './pages/PesananBerhasil';
-import AjukanPembatalan from './pages/AjukanPembatalan';
-import AdminDashboard from './pages/AdminDashboard';
-import Notifikasi from './pages/Notifikasi';
-import Beranda from './pages/Beranda';
-import UploadBuktiPembayaran from './pages/UploadBuktiPembayaran';
+import Register from './pages/Register';
+import WelcomeScreen from './pages/WelcomeScreen';
+import ProductDetail from './pages/ProductDetail';
+import OrderDetail from './pages/OrderDetail';
+import OrderList from './pages/OrderList';
+import Login from './pages/Login';
 
 function ScreenBar() {
   const loc = useLocation();
   const navs = [
-    { path: '/', label: 'Masuk' },
-    { path: '/daftarpesanansaya', label: 'DaftarPesananSaya' },
-    { path: '/detailpesanan', label: 'DetailPesanan' },
-    { path: '/detaileventkatalog', label: 'DetailEventKatalog' },
-    { path: '/schedulecalendar', label: 'ScheduleCalendar' },
-    { path: '/detailproduk', label: 'DetailProduk' },
-    { path: '/pesananberhasil', label: 'PesananBerhasil' },
-    { path: '/ajukanpembatalan', label: 'AjukanPembatalan' },
-    { path: '/admindashboard', label: 'AdminDashboard' },
-    { path: '/notifikasi', label: 'Notifikasi' },
-    { path: '/beranda', label: 'Beranda' },
-    { path: '/uploadbuktipembayaran', label: 'UploadBuktiPembayaran' }
+    { path: '/', label: 'Register' },
+    { path: '/welcomescreen', label: 'WelcomeScreen' },
+    { path: '/productdetail', label: 'ProductDetail' },
+    { path: '/orderdetail', label: 'OrderDetail' },
+    { path: '/orderlist', label: 'OrderList' },
+    { path: '/login', label: 'Login' }
   ];
 
   return (
@@ -67,19 +55,13 @@ export default function App() {
               <ScreenBar />
               <div className="pt-10 min-h-screen">
                 <Routes>
-                  <Route path='/' element={<Masuk />} />
-        <Route path='/daftarpesanansaya' element={<DaftarPesananSaya />} />
-        <Route path='/detailpesanan' element={<DetailPesanan />} />
-        <Route path='/detaileventkatalog' element={<DetailEventKatalog />} />
-        <Route path='/schedulecalendar' element={<ScheduleCalendar />} />
-        <Route path='/detailproduk' element={<DetailProduk />} />
-        <Route path='/pesananberhasil' element={<PesananBerhasil />} />
-        <Route path='/ajukanpembatalan' element={<AjukanPembatalan />} />
-        <Route path='/admindashboard' element={<AdminDashboard />} />
-        <Route path='/notifikasi' element={<Notifikasi />} />
-        <Route path='/beranda' element={<Beranda />} />
-        <Route path='/uploadbuktipembayaran' element={<UploadBuktiPembayaran />} />
-                  <Route path="*" element={<Masuk />} />
+                  <Route path='/' element={<Register />} />
+        <Route path='/welcomescreen' element={<WelcomeScreen />} />
+        <Route path='/productdetail' element={<ProductDetail />} />
+        <Route path='/orderdetail' element={<OrderDetail />} />
+        <Route path='/orderlist' element={<OrderList />} />
+        <Route path='/login' element={<Login />} />
+                  <Route path="*" element={<Register />} />
                 </Routes>
               </div>
             </BrowserRouter>
