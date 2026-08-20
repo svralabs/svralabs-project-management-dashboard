@@ -1,117 +1,165 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const AdminDashboardOverview = () => {
-  const kpiCards = [
-    { icon: 'shopping_cart', title: 'Order Masuk', value: '124', change: '+12%', changeColor: 'success', bgColor: 'primary-container', textColor: 'on-primary-container' },
-    { icon: 'sync_alt', title: 'Transaksi Berjalan', value: '45', change: '-2%', changeColor: 'error', bgColor: 'secondary-container', textColor: 'on-secondary-container' },
-    { icon: 'pending_actions', title: 'Menunggu Pembayaran', value: '18', bgColor: 'surface-container-high', textColor: 'primary' },
-    { icon: 'payments', title: 'Pembayaran Berhasil', value: '89', change: '+8%', changeColor: 'success', bgColor: 'tertiary-container', textColor: 'on-tertiary-container' }
-  ];
+export default function AdminDashboardOverview() {
+  const [activeTab, setActiveTab] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="flex h-screen bg-surface-container-low">
-      {/* SideNavBar */}
-      <aside className="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-md z-50">
-        <div className="mb-xl px-sm">
-          <h1 className="font-display text-heading-md font-bold text-primary">JastipPro</h1>
-          <p className="text-xs text-on-surface-variant">Admin Console</p>
-        </div>
-        <nav className="flex-1 space-y-sm">
-          <a className="flex items-center gap-md p-md bg-secondary-container text-on-secondary-container font-semibold rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">dashboard</span>
-            <span>Dashboard</span>
-          </a>
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">group</span>
-            <span>Customer</span>
-          </a>
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">event</span>
-            <span>Event</span>
-          </a>
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">menu_book</span>
-            <span>Katalog</span>
-          </a>
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">receipt_long</span>
-            <span>Transaksi</span>
-          </a>
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">description</span>
-            <span>Invoice</span>
-          </a>
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">calculate</span>
-            <span>Kalkulator AI</span>
-          </a>
-        </nav>
-        <div className="mt-auto border-t border-outline-variant pt-md">
-          <a className="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg cursor-pointer active:scale-95 transition-colors duration-200" href="#">
-            <span className="material-symbols-outlined">settings</span>
-            <span>Pengaturan</span>
-          </a>
-          <div className="mt-md flex items-center gap-md p-sm">
-            <img className="w-10 h-10 rounded-full border border-outline-variant object-cover" alt="Admin profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsUetNI6x_X2DbXUeeYsN3B136jo2HpmO-PF9diMzPvI46qTST8XKS2OhrmZyynkFXVhtYDxNRAflKNfaxXGKrYzq-FWqT3j7XUJyOKApu-GSOweWS5n5lYNolD-q7lNmKerGhENIvisXpIvKsTOpV7yZjxy2XngFxX9V9LMv18NB_JHT67eSdCFE_GazgnIs2rw3ocENgwNz6WXN4xliQH2fYib2txYkqCJh8qX0xdtLyEYQlQiqR"/>
-            <div className="overflow-hidden">
-              <p className="text-sm font-semibold truncate">Admin Utama</p>
-              <p className="text-xs text-on-surface-variant truncate">admin@jastippro.id</p>
-            </div>
-          </div>
-        </div>
-      </aside>
+    <div className="w-full min-h-screen text-slate-100 font-sans">
+      
 
-      {/* Main Content Area */}
-      <main className="ml-64 min-h-screen">
-        {/* TopNavBar */}
-        <header className="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 border-b border-outline-variant bg-surface flex justify-between items-center px-lg z-40">
-          <div className="flex items-center gap-md w-1/3">
-            <div className="relative w-full group">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary">search</span>
-              <input className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm" placeholder="Cari pesanan atau pelanggan..." type="text"/>
-            </div>
-          </div>
-          <div className="flex items-center gap-lg">
-            <div className="flex items-center gap-md">
-              <button className="relative p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
-                <span className="material-symbols-outlined">notifications</span>
-                <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
-              </button>
-              <button className="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
-                <span className="material-symbols-outlined">help_outline</span>
-              </button>
-            </div>
-            <div className="h-8 w-px bg-outline-variant"></div>
-            <div className="flex items-center gap-sm">
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold">Admin Dashboard</p>
-                <p className="text-xs text-on-surface-variant">Online</p>
-              </div>
-            </div>
-          </div>
-        </header>
+<header className="w-full sticky top-0 bg-surface z-50 flex items-center justify-between px-lg py-md border-b border-black">
+<div className="flex items-center gap-2">
+<span className="material-symbols-outlined text-primary font-bold" data-icon="shopping_bag">shopping_bag</span>
+<h1 className="font-headline-lg text-headline-lg font-black text-primary">JastipHub</h1>
+</div>
+<button className="neubrutalist-border p-2 rounded-lg active:scale-95 transition-all">
+<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main className="px-lg py-xl space-y-xl">
 
-        {/* Page Content */}
-        <div className="mt-16 p-lg">
-          {/* KPI Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg mb-lg">
-            {kpiCards.map((card, index) => (
-              <div key={index} className="bg-surface p-lg rounded-xl border border-outline-variant">
-                <div className="flex justify-between items-start mb-md">
-                  <span className={`material-symbols-outlined p-2 bg-${card.bgColor} text-${card.textColor} rounded-lg`}>{card.icon}</span>
-                  {card.change && (
-                    <span className={`text-${card.changeColor}-text text-xs font-semibold bg-${card.changeColor}-tint px-2 py-1 rounded-sm`}>{card.change}</span>
-                  )}
-                </div>
-                <p className="text-on-surface-variant text-sm mb-xs">{card.title}</p>
-                <h2 className="text-display-lg text-2xl font-bold">{card.value}</h2>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
+<section>
+<h2 className="font-headline-lg text-headline-lg text-text-primary tracking-tight">Dashboard Admin</h2>
+<p className="font-body-md text-text-secondary">Overview performa jastip hari ini.</p>
+</section>
+
+<section className="grid grid-cols-2 gap-md">
+
+<div className="neubrutalist-border bg-secondary-container p-lg flex flex-col justify-between min-h-[120px] rounded-lg">
+<span className="font-label-caps text-label-caps uppercase text-on-secondary-container opacity-80">Order Masuk</span>
+<div>
+<div className="font-headline-lg text-headline-lg">38</div>
+<div className="font-label-bold text-label-bold mt-1">Orders</div>
+</div>
+</div>
+
+<div className="neubrutalist-border bg-accent-pink p-lg flex flex-col justify-between min-h-[120px] rounded-lg">
+<span className="font-label-caps text-label-caps uppercase text-badge-pink-text opacity-80">Omset Event</span>
+<div>
+<div className="font-headline-md text-headline-md leading-tight">Rp 14.5M</div>
+<div className="font-label-bold text-label-bold mt-1">Total IDR</div>
+</div>
+</div>
+
+<div className="neubrutalist-border bg-accent-yellow p-lg flex flex-col justify-between min-h-[120px] rounded-lg">
+<span className="font-label-caps text-label-caps uppercase text-badge-yellow-text opacity-80">Sover List</span>
+<div>
+<div className="font-headline-lg text-headline-lg">12</div>
+<div className="font-label-bold text-label-bold mt-1">Pending Items</div>
+</div>
+</div>
+
+<div className="neubrutalist-border bg-primary-container p-lg flex flex-col justify-between min-h-[120px] rounded-lg">
+<span className="font-label-caps text-label-caps uppercase text-on-primary-container opacity-80">Lunas</span>
+<div>
+<div className="font-headline-lg text-headline-lg">24</div>
+<div className="font-label-bold text-label-bold mt-1">Transaksi</div>
+</div>
+</div>
+</section>
+
+<section className="neubrutalist-border bg-surface rounded-xl p-lg">
+<div className="flex items-center justify-between mb-lg">
+<h3 className="font-headline-md text-headline-md">Top Customers</h3>
+<span className="material-symbols-outlined text-accent-yellow" data-icon="stars" style={{fontVariationSettings: '\'FILL\' 1'}}>stars</span>
+</div>
+<div className="space-y-md">
+
+<div className="flex items-center justify-between p-md neubrutalist-border bg-surface-container-low rounded-lg">
+<div className="flex items-center gap-md">
+<div className="w-10 h-10 neubrutalist-border rounded-full bg-cover bg-center" data-alt="Close up portrait of a stylish woman with a trendy minimalist haircut, captured in high-key professional studio lighting against a clean pastel green background, reflecting a modern and premium service brand identity." style={{backgroundImage: 'url(\'https://lh3.googleusercontent.com/aida-public/AB6AXuAu4MTe-vi2D5Qqx71KBhPO0royHOctitxzdzoRz5MOXxCB1gqk5J8knlrHG4d2wS0JHWHFEu30wAoK6w-71x9MyxDMqwn7kJ2vtu6aIBNmCn3PCdn2Wqj5DKmkyxNgzqJxzsNfJ3trkj1L665_OUVheZVFdXh7do_nhtIQ6DP96Tbil8d8H5VzoH6H_m1c2u_7Sk-jGV8c_RzG8iJXemlvr16K0cZwmWv1As0Wy7mKoGzMsbLhSUoR\')'}}></div>
+<div>
+<div className="font-headline-md text-[1rem]">Anita S.</div>
+<div className="font-body-sm text-text-secondary">12 Orders</div>
+</div>
+</div>
+<span className="neubrutalist-border bg-badge-purple-bg text-badge-purple-text font-label-caps text-label-caps px-sm py-1 rounded-full">VIP</span>
+</div>
+
+<div className="flex items-center justify-between p-md neubrutalist-border bg-surface-container-low rounded-lg">
+<div className="flex items-center gap-md">
+<div className="w-10 h-10 neubrutalist-border rounded-full bg-cover bg-center" data-alt="Studio headshot of a friendly man wearing modern spectacles and a minimalist linen shirt, set against a soft yellow saturated background with crisp, even lighting and high clarity, projecting a trustworthy and professional user persona." style={{backgroundImage: 'url(\'https://lh3.googleusercontent.com/aida-public/AB6AXuC70Q-RGyFyRYZYuDyd7xJ6BL0ndi6_ene3uixHD-ZXcmf3CRf3f9N0gL9ENxpj4x9Aex1IwD2nsVPEV33AV7bhuLsqR4CxZ2aQIp-8poHUuQS87h14Efi4LPHRMOT9dbUQ5ATrfcCRET_WqpMTokg7_cW4xKod4ivb60BHoRfF-owNPKC7kZWpkEv6fpPCJXmlWphCW8cj9R0igMlVAiykwg6q4wkq9wGlfOqZLWBtBQ49ECUnKoMM\')'}}></div>
+<div>
+<div className="font-headline-md text-[1rem]">Budi R.</div>
+<div className="font-body-sm text-text-secondary">8 Orders</div>
+</div>
+</div>
+<span className="neubrutalist-border bg-badge-green-bg text-badge-green-text font-label-caps text-label-caps px-sm py-1 rounded-full">ACTIVE</span>
+</div>
+</div>
+</section>
+
+<section className="neubrutalist-border bg-surface rounded-xl p-lg" style={{transform: 'translate(0px, 0px)'}}>
+<h3 className="font-headline-md text-headline-md mb-lg">Weekly Performance</h3>
+<div className="h-40 flex items-end justify-around gap-2 px-sm"><div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-primary border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '40%'}}></div>
+<span className="font-label-caps text-[10px]">MON</span>
+</div>
+<div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-secondary border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '70%'}}></div>
+<span className="font-label-caps text-[10px]">TUE</span>
+</div>
+<div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-accent-yellow border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '55%'}}></div>
+<span className="font-label-caps text-[10px]">WED</span>
+</div>
+<div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-primary border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '90%'}}></div>
+<span className="font-label-caps text-[10px]">THU</span>
+</div>
+<div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-secondary border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '65%'}}></div>
+<span className="font-label-caps text-[10px]">FRI</span>
+</div>
+<div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-accent-yellow border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '80%'}}></div>
+<span className="font-label-caps text-[10px]">SAT</span>
+</div>
+<div className="flex flex-col items-center gap-2 w-full">
+<div className="w-full bg-primary border border-black rounded-t-sm transition-all hover:scale-x-105" style={{height: '45%'}}></div>
+<span className="font-label-caps text-[10px]">SUN</span>
+</div></div>
+</section>
+
+<section className="neubrutalist-border bg-surface-container-highest rounded-xl p-lg" style={{transform: 'translate(0px, 0px)'}}>
+<h3 className="font-headline-md text-headline-md mb-md">Quick Actions</h3>
+<div className="grid grid-cols-2 gap-sm">
+<button className="bg-surface neubrutalist-border p-md rounded-lg flex items-center gap-2 hover:bg-surface-container active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span className="material-symbols-outlined text-primary" data-icon="add_box">add_box</span>
+<span className="font-label-bold">New Item</span>
+</button>
+<button className="bg-surface neubrutalist-border p-md rounded-lg flex items-center gap-2 hover:bg-surface-container active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span className="material-symbols-outlined text-secondary" data-icon="print">print</span>
+<span className="font-label-bold">Labels</span>
+</button>
+</div>
+</section>
+</main>
+
+<nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center px-lg py-sm bg-surface mb-4 mx-auto w-[90%] max-w-md border border-black rounded-full neubrutalist-shadow">
+
+<div className="bg-primary-container text-on-primary-container rounded-full p-2 border border-black transition-all hover:scale-110 active:scale-95">
+<span className="material-symbols-outlined block" data-icon="home" style={{fontVariationSettings: '\'FILL\' 1'}}>home</span>
+</div>
+
+<div className="text-on-surface-variant p-2 transition-all hover:scale-110 active:scale-95">
+<span className="material-symbols-outlined block" data-icon="calendar_today">calendar_today</span>
+</div>
+
+<div className="text-on-surface-variant p-2 transition-all hover:scale-110 active:scale-95">
+<span className="material-symbols-outlined block" data-icon="receipt_long">receipt_long</span>
+</div>
+
+<div className="text-on-surface-variant p-2 transition-all hover:scale-110 active:scale-95">
+<span className="material-symbols-outlined block" data-icon="person">person</span>
+</div>
+</nav>
+
+
+
+
     </div>
   );
-};
-
-export default AdminDashboardOverview;
+}
