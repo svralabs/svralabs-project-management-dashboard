@@ -1,73 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import OrderStatusBadge from '../components/OrderStatusBadge';
+import { getOrders } from '../api/orders';
 
 export default function DaftarPesananSaya() {
-  const [activeTab, setActiveTab] = useState('Semua');
+  const [orders, setOrders] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('Semua');
 
-  const orders = [
-    {
-      id: 'JT-1042',
-      title: 'Perlengkapan Bayi',
-      date: '15 Juli 2026',
-      status: 'Diproses',
-      items: [
-        {
-          name: 'Stroller Modern Premium - Dark Edition',
-          price: 'Rp2.175.000',
-          quantity: 1,
-          image: 'https://lh3.googleusercontent.com/aida/AP1WRLvDWQOVN_xc8YhXwTXK0rYzORicmqe-McjlUfjWFWkXAZ8gLUN1uKNkaFphJz5NmdZTqjB3kolaTh6-F9dJrpGRm8U5jTABj7jUKYnwei--hqGkgdaYX1Sc3znF5ouad_mNgX0r6xNKubNyFc3Dc4_DXVLwXe8jut5TqKhiPRU21-wNq7fATm8RBU82gZNy7vwbD9v93vEDQwJ3WrnW0qb5UtJvTTwM61nCl_wfJqiULuBq-vhyvmRuCm4'
-        }
-      ]
-    },
-    {
-      id: 'JT-0988',
-      title: 'Koleksi Mainan',
-      date: '14 Juli 2026',
-      status: 'Menunggu Bayar',
-      items: [
-        {
-          name: 'Puzzle Kayu Montessori (Set of 5)',
-          price: 'Rp450.000',
-          quantity: 2,
-          image: 'https://lh3.googleusercontent.com/aida/AP1WRLvDWQOVN_xc8YhXwTXK0rYzORicmqe-McjlUfjWFWkXAZ8gLUN1uKNkaFphJz5NmdZTqjB3kolaTh6-F9dJrpGRm8U5jTABj7jUKYnwei--hqGkgdaYX1Sc3znF5ouad_mNgX0r6xNKubNyFc3Dc4_DXVLwXe8jut5TqKhiPRU21-wNq7fATm8RBU82gZNy7vwbD9v93vEDQwJ3WrnW0qb5UtJvTTwM61nCl_wfJqiULuBq-vhyvmRuCm4'
-        }
-      ]
-    },
-    {
-      id: 'JT-0855',
-      title: 'Kebutuhan Ibu',
-      date: '10 Juli 2026',
-      status: 'Selesai',
-      items: [
-        {
-          name: 'Tas Diaper Waterproof Oxford',
-          price: 'Rp825.000',
-          quantity: 1,
-          image: 'https://lh3.googleusercontent.com/aida/AP1WRLvDWQOVN_xc8YhXwTXK0rYzORicmqe-McjlUfjWFWkXAZ8gLUN1uKNkaFphJz5NmdZTqjB3kolaTh6-F9dJrpGRm8U5jTABj7jUKYnwei--hqGkgdaYX1Sc3znF5ouad_mNgX0r6xNKubNyFc3Dc4_DXVLwXe8jut5TqKhiPRU21-wNq7fATm8RBU82gZNy7vwbD9v93vEDQwJ3WrnW0qb5UtJvTTwM61nCl_wfJqiULuBq-vhyvmRuCm4'
-        }
-      ]
-    },
-    {
-      id: 'JT-0712',
-      title: 'Aksesoris Kamar',
-      date: '05 Juli 2026',
-      status: 'Dibatalkan',
-      items: [
-        {
-          name: 'Lampu Tidur Bayi LED',
-          price: 'Rp350.000',
-          quantity: 1,
-          image: 'https://lh3.googleusercontent.com/aida/AP1WRLvDWQOVN_xc8YhXwTXK0rYzORicmqe-McjlUfjWFWkXAZ8gLUN1uKNkaFphJz5NmdZTqjB3kolaTh6-F9dJrpGRm8U5jTABj7jUKYnwei--hqGkgdaYX1Sc3znF5ouad_mNgX0r6xNKubNyFc3Dc4_DXVLwXe8jut5TqKhiPRU21-wNq7fATm8RBU82gZNy7vwbD9v93vEDQwJ3WrnW0qb5UtJvTTwM61nCl_wfJqiULuBq-vhyvmRuCm4'
-        }
-      ]
+  useEffect(() => {
+    async function fetchOrders() {
+      const data = await getOrders();
+      setOrders(data);
     }
-  ];
+    fetchOrders();
+  }, []);
 
-  const filteredOrders = activeTab === 'Semua' ? orders : orders.filter(order => order.status === activeTab);
+  const filteredOrders = activeFilter === 'Semua'
+    ? orders
+    : orders.filter(order => order.status === activeFilter);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Diproses':
+        return 'bg-secondary-container text-primary';
+      case 'Menunggu Bayar':
+        return 'bg-secondary-container text-on-secondary-container';
+      case 'Selesai':
+        return 'bg-success-tint text-success-text';
+      case 'Dibatalkan':
+        return 'bg-error-tint text-error-text';
+      default:
+        return 'bg-surface-container text-on-surface-variant';
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-surface-container">
+    <div className="min-h-screen bg-background">
       <header className="w-full sticky top-0 z-40 bg-surface dark:bg-surface-dim border-b border-border dark:border-outline-variant flex justify-between items-center px-margin py-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
@@ -83,22 +50,23 @@ export default function DaftarPesananSaya() {
       </header>
 
       <nav className="bg-surface sticky top-[72px] z-30 px-margin py-sm flex gap-sm overflow-x-auto no-scrollbar border-b border-border">
-        {['Semua', 'Diproses', 'Menunggu Bayar', 'Selesai'].map(tab => (
+        {['Semua', 'Diproses', 'Menunggu Bayar', 'Selesai', 'Dibatalkan'].map((filter) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-lg py-2 ${activeTab === tab ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container'} rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform`}
+            key={filter}
+            onClick={() => setActiveFilter(filter)}
+            className={`px-lg py-2 ${activeFilter === filter ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container'} rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform`}
           >
-            {tab}
+            {filter}
           </button>
         ))}
       </nav>
 
       <main className="px-margin py-lg space-y-md">
-        {filteredOrders.map(order => (
-          <div
+        {filteredOrders.map((order) => (
+          <Link
             key={order.id}
-            className={`bg-surface border border-border rounded-[14px] p-md flex flex-col gap-md ${order.status === 'Dibatalkan' ? 'opacity-75' : ''}`}
+            to={`/pesanan/${order.id}`}
+            className={`block bg-surface border border-border rounded-[14px] p-md flex flex-col gap-md ${order.status === 'Dibatalkan' ? 'opacity-75' : ''}`}
           >
             <div className="flex justify-between items-start">
               <div className="space-y-xs">
@@ -106,7 +74,9 @@ export default function DaftarPesananSaya() {
                 <h3 className="font-heading-md text-heading-md">{order.title}</h3>
                 <p className="font-body-base text-body-base text-tx-secondary">{order.date}</p>
               </div>
-              <OrderStatusBadge status={order.status} />
+              <span className={`px-3 py-1 ${getStatusColor(order.status)} text-[11px] font-bold rounded-full uppercase tracking-wider`}>
+                {order.status}
+              </span>
             </div>
             <div className="flex items-center gap-md pt-sm border-t border-border">
               <div className="w-20 h-20 bg-surface-container rounded-lg overflow-hidden shrink-0 border border-border">
@@ -119,28 +89,17 @@ export default function DaftarPesananSaya() {
               <div className="flex-grow">
                 <p className="font-body-base text-body-base text-on-surface-variant">{order.items[0].name}</p>
                 <div className="mt-xs flex justify-between items-end">
-                  <p className="font-heading-md text-heading-md text-primary">{order.items[0].price}</p>
+                  <p className="font-heading-md text-heading-md text-primary">Rp{order.items[0].price.toLocaleString()}</p>
                   <p className="text-xs text-tx-secondary">{order.items[0].quantity} Barang</p>
                 </div>
               </div>
             </div>
             {order.status === 'Menunggu Bayar' && (
-              <Link
-                to={`/pesanan-saya/${order.id}/review`}
-                className="w-full py-2 bg-primary text-on-primary rounded-full font-label-caps text-label-caps active:scale-95 transition-transform text-center"
-              >
+              <button className="w-full py-2 bg-primary text-on-primary rounded-full font-label-caps text-label-caps active:scale-95 transition-transform">
                 Bayar Sekarang
-              </Link>
+              </button>
             )}
-            {order.status === 'Selesai' && (
-              <Link
-                to={`/pesanan-saya/${order.id}/detail`}
-                className="w-full py-2 bg-surface-container text-on-surface-variant rounded-full font-label-caps text-label-caps active:scale-95 transition-transform text-center"
-              >
-                Lihat Detail
-              </Link>
-            )}
-          </div>
+          </Link>
         ))}
       </main>
     </div>

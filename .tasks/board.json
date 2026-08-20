@@ -1,25 +1,24 @@
 {
   "project_name": "svralabs-project-management-dashboard",
-  "architecture_summary": "Modular React SPA. Pages in src/pages/. Shared components in src/components/. React Router v6 for navigation. Tailwind CSS for styling. No state management library (use React context for global state). API client in src/api/.",
+  "architecture_summary": "Modular React app. Pages in src/pages/. Shared components in src/components/. React Router v6 for navigation. Tailwind CSS for styling. No state management lib (use React context for global state). API client in src/api/.",
   "tickets": [
     {
       "id": "TASK-001",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Beranda (Home) page component",
+      "title": "Create Beranda (Home) page component",
       "source_screen": "beranda_home",
-      "description": "Convert Stitch beranda_home screen to React. Extract reusable components (HeroBanner, ProductCard, EventCard). Use Tailwind for styling. Match design pixel-perfect.",
+      "description": "Convert Stitch beranda_home screen to React component. Match layout, colors, typography. Use Tailwind classes. Extract reusable components (e.g., product cards, banners) to src/components/.",
       "target_files": [
         "src/pages/Beranda.jsx",
-        "src/components/HeroBanner.jsx",
         "src/components/ProductCard.jsx",
-        "src/components/EventCard.jsx"
+        "src/components/Banner.jsx"
       ],
       "acceptance_criteria": [
-        "Page render without errors",
-        "All elements match Stitch design",
-        "Responsive behavior preserved",
-        "Reusable components extracted"
+        "Pixel-perfect match to Stitch design",
+        "Responsive across mobile, tablet, desktop",
+        "Reusable components extracted",
+        "No hardcoded text (use i18n keys)"
       ],
       "status": "DONE"
     },
@@ -27,19 +26,20 @@
       "id": "TASK-002",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Masuk (Login) and Daftar Akun (Register) pages",
+      "title": "Create Masuk (Login) and Daftar Akun (Register) pages",
       "source_screen": "masuk, daftar_akun",
-      "description": "Create login and registration pages. Form validation for email, password, phone. Error states for invalid inputs. Success redirect to Beranda.",
+      "description": "Build login and registration forms. Match Stitch design. Add form validation (client-side). Connect to auth API. Store JWT in httpOnly cookie. Redirect logic: post-login to beranda, post-register to masuk.",
       "target_files": [
         "src/pages/Masuk.jsx",
         "src/pages/DaftarAkun.jsx",
-        "src/components/AuthForm.jsx"
+        "src/api/auth.js"
       ],
       "acceptance_criteria": [
-        "Forms submit to mock API endpoint",
-        "Validation errors display",
-        "Success redirect works",
-        "Design matches Stitch"
+        "Form fields match Stitch design",
+        "Client-side validation (required fields, email format)",
+        "API integration (POST /auth/login, POST /auth/register)",
+        "Error messages display below fields",
+        "JWT stored securely (httpOnly cookie)"
       ],
       "status": "DONE"
     },
@@ -47,19 +47,21 @@
       "id": "TASK-003",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Detail Produk (Product Detail) and Detail Event Katalog (Event Detail) pages",
+      "title": "Create Detail Produk (Product Detail) and Detail Event Katalog (Event Detail) pages",
       "source_screen": "detail_produk, detail_event_katalog",
-      "description": "Product and event detail pages. Dynamic content from mock API. Add to cart/button states. Image gallery component.",
+      "description": "Convert product and event detail screens. Match layout, images, buttons. Add quantity selector, add-to-cart button. Fetch data from API. Handle loading/error states.",
       "target_files": [
         "src/pages/DetailProduk.jsx",
         "src/pages/DetailEventKatalog.jsx",
-        "src/components/ImageGallery.jsx"
+        "src/api/products.js",
+        "src/api/events.js"
       ],
       "acceptance_criteria": [
-        "Dynamic content renders",
-        "Image gallery functional",
-        "Add to cart button states work",
-        "Design matches Stitch"
+        "Pixel-perfect match to Stitch design",
+        "API data fetching (GET /products/:id, GET /events/:id)",
+        "Loading skeleton, error boundary",
+        "Quantity selector works (min 1, max stock)",
+        "Add-to-cart button triggers cart context update"
       ],
       "status": "DONE"
     },
@@ -67,23 +69,19 @@
       "id": "TASK-004",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Pesanan Saya (My Orders) flow",
-      "source_screen": "daftar_pesanan_saya, pesanan_saya_order_review, pesanan_berhasil_success, detail_pesanan_transaction_detail, ajukan_pembatalan_cancellation_request",
-      "description": "Order listing, review, success, detail, and cancellation request pages. Order status badges. Cancellation form with validation.",
+      "title": "Create Daftar Pesanan Saya (My Orders) and Detail Pesanan (Order Detail) pages",
+      "source_screen": "daftar_pesanan_saya, detail_pesanan_transaction_detail",
+      "description": "Build order listing and detail screens. Match Stitch design. Fetch orders from API. Status badges (e.g., 'Diproses', 'Dikirim'). Cancellation request button links to ajukan_pembatalan.",
       "target_files": [
         "src/pages/DaftarPesananSaya.jsx",
-        "src/pages/PesananSayaOrderReview.jsx",
-        "src/pages/PesananBerhasilSuccess.jsx",
-        "src/pages/DetailPesananTransactionDetail.jsx",
-        "src/pages/AjukanPembatalanCancellationRequest.jsx",
-        "src/components/OrderStatusBadge.jsx",
-        "src/components/CancellationForm.jsx"
+        "src/pages/DetailPesanan.jsx",
+        "src/api/orders.js"
       ],
       "acceptance_criteria": [
-        "Order list renders with status badges",
-        "Order review flow works",
-        "Cancellation form submits",
-        "Design matches Stitch"
+        "Order list matches Stitch design (cards, status badges)",
+        "API integration (GET /orders, GET /orders/:id)",
+        "Status badges color-coded",
+        "Cancellation button links to ajukan_pembatalan with order ID"
       ],
       "status": "DONE"
     },
@@ -91,20 +89,20 @@
       "id": "TASK-005",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Upload Bukti Pembayaran (Payment Proof) and Schedule Calendar pages",
-      "source_screen": "upload_bukti_pembayaran, schedule_calendar",
-      "description": "Payment proof upload page with file validation. Calendar page for event scheduling. Date picker component.",
+      "title": "Create Upload Bukti Pembayaran (Payment Proof) and Pesanan Berhasil (Success) pages",
+      "source_screen": "upload_bukti_pembayaran, pesanan_berhasil_success",
+      "description": "Build payment proof upload form. Match Stitch design. File upload to API (POST /orders/:id/payment-proof). Success page shows order summary. Redirect logic: post-upload to pesanan_berhasil.",
       "target_files": [
         "src/pages/UploadBuktiPembayaran.jsx",
-        "src/pages/ScheduleCalendar.jsx",
-        "src/components/FileUpload.jsx",
-        "src/components/DatePicker.jsx"
+        "src/pages/PesananBerhasil.jsx",
+        "src/api/payments.js"
       ],
       "acceptance_criteria": [
-        "File upload validates type/size",
-        "Calendar displays events",
-        "Date selection works",
-        "Design matches Stitch"
+        "File upload form matches Stitch design",
+        "API integration (POST /orders/:id/payment-proof)",
+        "File type/size validation (JPEG/PNG, <2MB)",
+        "Success page shows order summary",
+        "Redirect to pesanan_berhasil after upload"
       ],
       "status": "DONE"
     },
@@ -112,19 +110,20 @@
       "id": "TASK-006",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Notifikasi (Notifications) and Admin Dashboard Overview pages",
-      "source_screen": "notifikasi_notifications, admin_dashboard_overview",
-      "description": "Notifications page with read/unread states. Admin dashboard with stats and recent activity. Notification badge component.",
+      "title": "Create Ajukan Pembatalan (Cancellation Request) and Notifikasi (Notifications) pages",
+      "source_screen": "ajukan_pembatalan_cancellation_request, notifikasi_notifications",
+      "description": "Build cancellation request form. Match Stitch design. Submit to API (POST /orders/:id/cancellation). Notifications page lists alerts. Mark-as-read API (PATCH /notifications/:id).",
       "target_files": [
+        "src/pages/AjukanPembatalan.jsx",
         "src/pages/Notifikasi.jsx",
-        "src/pages/AdminDashboardOverview.jsx",
-        "src/components/NotificationBadge.jsx",
-        "src/components/StatsCard.jsx"
+        "src/api/cancellations.js",
+        "src/api/notifications.js"
       ],
       "acceptance_criteria": [
-        "Notifications mark as read",
-        "Admin stats render",
-        "Design matches Stitch"
+        "Cancellation form matches Stitch design (reason dropdown, notes field)",
+        "API integration (POST /orders/:id/cancellation)",
+        "Notifications list matches Stitch design",
+        "Mark-as-read works (PATCH /notifications/:id)"
       ],
       "status": "DONE"
     },
@@ -132,17 +131,19 @@
       "id": "TASK-007",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Welcome Screen page",
-      "source_screen": "welcome_screen",
-      "description": "Welcome screen with onboarding flow. Language selection. Get started button. Background image/video component.",
+      "title": "Create Schedule Calendar and Admin Dashboard Overview pages",
+      "source_screen": "schedule_calendar, admin_dashboard_overview",
+      "description": "Build calendar view for events. Match Stitch design. Use react-big-calendar. Admin dashboard shows stats, charts. Fetch data from API. Role-based access (admin only).",
       "target_files": [
-        "src/pages/WelcomeScreen.jsx",
-        "src/components/BackgroundMedia.jsx"
+        "src/pages/ScheduleCalendar.jsx",
+        "src/pages/AdminDashboard.jsx",
+        "src/api/admin.js"
       ],
       "acceptance_criteria": [
-        "Onboarding flow works",
-        "Language selection functional",
-        "Design matches Stitch"
+        "Calendar matches Stitch design (events, date picker)",
+        "API integration (GET /events?range=month)",
+        "Admin dashboard shows stats/charts",
+        "Role check (redirect non-admins to beranda)"
       ],
       "status": "DONE"
     },
@@ -152,23 +153,24 @@
       "model": "hermes-auto",
       "title": "App shell, navigation bar, and router wiring (src/App.jsx)",
       "source_screen": "",
-      "description": "Main app shell with responsive navigation. React Router v6 setup. Route configuration for all pages. Auth guard for protected routes. 404 page.",
+      "description": "Create main App shell. Add navigation bar (match Stitch design). Set up React Router v6 routes. Lazy-load pages. Auth context for user state. 404 page. Global error boundary.",
       "target_files": [
         "src/App.jsx",
-        "src/components/NavBar.jsx",
-        "src/components/AuthGuard.jsx",
+        "src/components/Navbar.jsx",
+        "src/context/AuthContext.jsx",
         "src/pages/NotFound.jsx"
       ],
       "acceptance_criteria": [
-        "All routes load correct pages",
-        "Navigation works",
-        "Auth guard redirects unauthenticated users",
-        "404 page displays for unknown routes",
-        "Responsive behavior preserved"
+        "Navigation bar matches Stitch design (active state, mobile menu)",
+        "Routes configured for all pages",
+        "Lazy-loaded components",
+        "Auth context provides user state",
+        "404 page for unknown routes",
+        "Global error boundary"
       ],
       "status": "DONE"
     }
   ],
   "status": "IN_PROGRESS",
-  "updated_at": "2026-08-20 14:38:31"
+  "updated_at": "2026-08-20 16:29:47"
 }

@@ -4,29 +4,33 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import WelcomeScreen from './pages/WelcomeScreen';
 import Masuk from './pages/Masuk';
-import DaftarAkun from './pages/DaftarAkun';
 import DaftarPesananSaya from './pages/DaftarPesananSaya';
+import DetailPesanan from './pages/DetailPesanan';
 import DetailEventKatalog from './pages/DetailEventKatalog';
-import AdminDashboardOverview from './pages/AdminDashboardOverview';
 import ScheduleCalendar from './pages/ScheduleCalendar';
 import DetailProduk from './pages/DetailProduk';
+import PesananBerhasil from './pages/PesananBerhasil';
+import AjukanPembatalan from './pages/AjukanPembatalan';
+import AdminDashboard from './pages/AdminDashboard';
 import Notifikasi from './pages/Notifikasi';
+import Beranda from './pages/Beranda';
 import UploadBuktiPembayaran from './pages/UploadBuktiPembayaran';
 
 function ScreenBar() {
   const loc = useLocation();
   const navs = [
-    { path: '/', label: 'WelcomeScreen' },
-    { path: '/masuk', label: 'Masuk' },
-    { path: '/daftarakun', label: 'DaftarAkun' },
+    { path: '/', label: 'Masuk' },
     { path: '/daftarpesanansaya', label: 'DaftarPesananSaya' },
+    { path: '/detailpesanan', label: 'DetailPesanan' },
     { path: '/detaileventkatalog', label: 'DetailEventKatalog' },
-    { path: '/admindashboardoverview', label: 'AdminDashboardOverview' },
     { path: '/schedulecalendar', label: 'ScheduleCalendar' },
     { path: '/detailproduk', label: 'DetailProduk' },
+    { path: '/pesananberhasil', label: 'PesananBerhasil' },
+    { path: '/ajukanpembatalan', label: 'AjukanPembatalan' },
+    { path: '/admindashboard', label: 'AdminDashboard' },
     { path: '/notifikasi', label: 'Notifikasi' },
+    { path: '/beranda', label: 'Beranda' },
     { path: '/uploadbuktipembayaran', label: 'UploadBuktiPembayaran' }
   ];
 
@@ -63,17 +67,19 @@ export default function App() {
               <ScreenBar />
               <div className="pt-10 min-h-screen">
                 <Routes>
-                  <Route path='/' element={<WelcomeScreen />} />
-        <Route path='/masuk' element={<Masuk />} />
-        <Route path='/daftarakun' element={<DaftarAkun />} />
+                  <Route path='/' element={<Masuk />} />
         <Route path='/daftarpesanansaya' element={<DaftarPesananSaya />} />
+        <Route path='/detailpesanan' element={<DetailPesanan />} />
         <Route path='/detaileventkatalog' element={<DetailEventKatalog />} />
-        <Route path='/admindashboardoverview' element={<AdminDashboardOverview />} />
         <Route path='/schedulecalendar' element={<ScheduleCalendar />} />
         <Route path='/detailproduk' element={<DetailProduk />} />
+        <Route path='/pesananberhasil' element={<PesananBerhasil />} />
+        <Route path='/ajukanpembatalan' element={<AjukanPembatalan />} />
+        <Route path='/admindashboard' element={<AdminDashboard />} />
         <Route path='/notifikasi' element={<Notifikasi />} />
+        <Route path='/beranda' element={<Beranda />} />
         <Route path='/uploadbuktipembayaran' element={<UploadBuktiPembayaran />} />
-                  <Route path="*" element={<WelcomeScreen />} />
+                  <Route path="*" element={<Masuk />} />
                 </Routes>
               </div>
             </BrowserRouter>

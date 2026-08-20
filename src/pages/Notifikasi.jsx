@@ -1,216 +1,89 @@
-import { useState } from 'react';
-import {ArrowLeft as ArrowBack} from 'lucide-react';
-
-const notifications = [
-  {
-    id: 1,
-    title: 'Invoice final sudah terbit',
-    time: '10:30',
-    message: 'Silakan cek detail pesanan Anda untuk melakukan pelunasan.',
-    icon: 'receipt',
-    type: 'important',
-    read: false,
-    date: 'today'
-  },
-  {
-    id: 2,
-    title: 'Pengajuan pembatalan disetujui',
-    time: '08:45',
-    message: 'Pembatalan pesanan #JT-0912 telah disetujui oleh tim.',
-    icon: 'cancel',
-    type: 'error',
-    read: false,
-    date: 'today'
-  },
-  {
-    id: 3,
-    title: 'Pembayaran divalidasi',
-    time: '14:15',
-    message: 'Pembayaran untuk pesanan #JT-1042 telah berhasil diverifikasi.',
-    icon: 'check_circle',
-    type: 'success',
-    read: true,
-    date: 'yesterday'
-  },
-  {
-    id: 4,
-    title: 'Pengingat Bayar',
-    time: '09:00',
-    message: 'Segera lakukan pembayaran sebelum pukul 18:00 WIB.',
-    icon: 'notifications_active',
-    type: 'reminder',
-    read: true,
-    date: 'yesterday'
-  }
-];
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getNotifications, markAsRead } from '../api/notifications';
 
 export default function Notifikasi() {
-  const [notificationList, setNotificationList] = useState(notifications);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const markAllAsRead = () => {
-    setNotificationList(notificationList.map(notification => ({
-      ...notification,
-      read: true
-    })));
-  };
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const data = await getNotifications();
+        setNotifications(data);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getNotificationStyle = (notification) => {
-    if (notification.read) {
-      return 'bg-surface/60 opacity-70';
-    }
-    switch (notification.type) {
-      case 'important':
-        return 'bg-secondary-container';
-      case 'error':
-        return 'bg-error-tint';
-      case 'success':
-        return 'bg-success-tint';
-      default:
-        return 'bg-surface-container';
-    }
-  };
+    fetchNotifications();
+  }, []);
 
-  const getIconColor = (notification) => {
-    if (notification.read) {
-      return 'text-on-secondary-fixed-variant opacity-80';
-    }
-    switch (notification.type) {
-      case 'important':
-        return 'text-primary';
-      case 'error':
-        return 'text-error-text';
-      case 'success':
-        return 'text-success-text';
-      default:
-        return 'text-on-secondary-fixed-variant';
+  const handleMarkAsRead = async (id) => {
+    try {
+      await markAsRead(id);
+      setNotifications(notifications.map(notification =>
+        notification.id === id ? { ...notification, read: true } : notification
+      ));
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
     }
   };
-
-  const todayNotifications = notificationList.filter(n => n.date === 'today');
-  const yesterdayNotifications = notificationList.filter(n => n.date === 'yesterday');
 
   return (
-    <div className="min-h-screen bg-surface">
-      <header className="fixed top-0 w-full z-50 bg-surface border-b border-border flex items-center justify-between px-md h-14">
-        <div className="flex items-center gap-4">
-          <button className="text-primary transition-colors duration-200 ease-in-out hover:bg-surface-container p-2 rounded-full">
-            <ArrowBack size={24} />
-          </button>
-          <h1 className="font-heading-md text-heading-md font-bold text-on-surface">Notifikasi</h1>
-        </div>
+    <div className="min-h-screen bg-surface-container-low">
+      <header className="bg-surface border-b border-border px-lg py-md flex items-center justify-between">
         <button
-          className="text-primary font-label-caps text-label-caps font-semibold"
-          onClick={markAllAsRead}
+          aria-label="Kembali"
+          className="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors duration-200 flex items-center justify-center"
+          onClick={() => navigate(-1)}
         >
-          Tandai Dibaca
+          <span className="material-symbols-outlined text-md">arrow_back</span>
         </button>
+        <h1 className="font-heading-md text-heading-md text-on-surface">Notifikasi</h1>
+        <div className="w-8 h-8"></div>
       </header>
 
-      <main className="pt-14 pb-20 px-gutter">
-        {todayNotifications.length > 0 && (
-          <section className="mt-6">
-            <h2 className="font-bold text-on-surface-variant mb-4 px-1">Hari Ini</h2>
-            <div className="space-y-3">
-              {todayNotifications.map(notification => (
-                <div
-                  key={notification.id}
-                  className={`notification-item rounded-xl border border-border p-md flex gap-4 transition-colors duration-200 ${getNotificationStyle(notification)}`}
-                >
-                  <div className="w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0">
-                    <span className={`material-symbols-outlined ${getIconColor(notification)}`}>{notification.icon}</span>
+      <div className="p-margin space-y-md">
+        {loading ? (
+          <div className="flex justify-center items-center py-lg">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : notifications.length === 0 ? (
+          <div className="text-center py-lg text-on-surface-variant">
+            Tidak ada notifikasi
+          </div>
+        ) : (
+          <div className="space-y-md">
+            {notifications.map((notification) => (
+              <div
+                key={notification.id}
+                className={`p-md rounded-xl border ${notification.read ? 'border-outline-variant' : 'border-primary bg-primary-tint'}`}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="font-heading-sm text-heading-sm text-on-surface">{notification.title}</h3>
+                    <p className="text-body-base text-on-surface-variant mt-xs">{notification.message}</p>
+                    <p className="text-label-sm text-outline mt-xs">{new Date(notification.createdAt).toLocaleString()}</p>
                   </div>
-                  <div className="flex-1 flex flex-col gap-1">
-                    <div className="flex justify-between items-start">
-                      <h3 className={`font-bold text-on-surface leading-tight ${notification.read ? 'font-semibold' : ''}`}>
-                        {notification.title}
-                      </h3>
-                      <span className={`text-[11px] font-medium ${notification.read ? 'text-outline' : 'text-primary'}`}>
-                        {notification.time}
-                      </span>
-                    </div>
-                    <p className="font-body-base text-body-base text-on-surface-variant">
-                      {notification.message}
-                    </p>
-                    {notification.type === 'important' && (
-                      <div className="mt-1 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-primary"></span>
-                        <span className="text-[10px] uppercase tracking-wider text-primary font-bold">Penting</span>
-                      </div>
-                    )}
-                  </div>
+                  {!notification.read && (
+                    <button
+                      aria-label="Tandai sebagai dibaca"
+                      className="p-xs text-primary hover:bg-surface-container-low rounded-full transition-colors duration-200 flex items-center justify-center"
+                      onClick={() => handleMarkAsRead(notification.id)}
+                    >
+                      <span className="material-symbols-outlined text-md">done</span>
+                    </button>
+                  )}
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
+            ))}
+          </div>
         )}
-
-        {yesterdayNotifications.length > 0 && (
-          <section className="mt-8">
-            <h2 className="font-bold text-on-surface-variant mb-4 px-1">Kemarin</h2>
-            <div className="space-y-3">
-              {yesterdayNotifications.map(notification => (
-                <div
-                  key={notification.id}
-                  className={`notification-item rounded-xl border border-border p-md flex gap-4 transition-colors duration-200 ${getNotificationStyle(notification)}`}
-                >
-                  <div className="w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0">
-                    <span className={`material-symbols-outlined ${getIconColor(notification)}`}>{notification.icon}</span>
-                  </div>
-                  <div className="flex-1 flex flex-col gap-1">
-                    <div className="flex justify-between items-start">
-                      <h3 className={`font-bold text-on-surface leading-tight ${notification.read ? 'font-semibold' : ''}`}>
-                        {notification.title}
-                      </h3>
-                      <span className={`text-[11px] font-medium ${notification.read ? 'text-outline' : 'text-primary'}`}>
-                        {notification.time}
-                      </span>
-                    </div>
-                    <p className="font-body-base text-body-base text-on-surface-variant">
-                      {notification.message}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <div className="mt-12 mb-8 bg-primary rounded-2xl p-6 text-on-primary overflow-hidden relative">
-          <div className="relative z-10">
-            <h4 className="font-heading-md text-heading-md mb-2">Butuh Bantuan?</h4>
-            <p className="font-body-base text-on-primary/80 mb-4">Hubungi tim support kami jika Anda mengalami kendala dengan pesanan.</p>
-            <button className="bg-surface text-primary font-bold px-6 py-2 rounded-full text-sm active:scale-95 transition-transform">
-              Hubungi CS
-            </button>
-          </div>
-          <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-          <div className="absolute right-4 top-4 opacity-20">
-            <span className="material-symbols-outlined text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>help_center</span>
-          </div>
-        </div>
-      </main>
-
-      <nav className="fixed bottom-0 w-full z-50 bg-surface border-t border-border flex justify-around items-center h-16 px-gutter pb-safe">
-        <a className="flex flex-col items-center justify-center text-on-secondary-fixed-variant transition-transform duration-150 active:scale-95 hover:bg-surface-container-low" href="#">
-          <span className="material-symbols-outlined">home</span>
-          <span className="font-label-caps text-label-caps">Home</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-on-secondary-fixed-variant transition-transform duration-150 active:scale-95 hover:bg-surface-container-low" href="#">
-          <span className="material-symbols-outlined">receipt_long</span>
-          <span className="font-label-caps text-label-caps">Orders</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 active:scale-95" href="#">
-          <div className="relative">
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>notifications</span>
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-error-text border-2 border-surface rounded-full"></span>
-          </div>
-          <span className="font-label-caps text-label-caps">Inbox</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-on-secondary-fixed-variant transition-transform duration-150 active:scale-95 hover:bg-surface-container-low" href="#">
-          <span className="material-symbols-outlined">person</span>
-          <span className="font-label-caps text-label-caps">Profile</span>
-        </a>
-      </nav>
+      </div>
     </div>
   );
 }

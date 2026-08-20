@@ -1,57 +1,138 @@
-import { useState } from 'react';
-import DatePicker from '../components/DatePicker';
+// src/pages/ScheduleCalendar.jsx
+import { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getEvents } from '../api/admin';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const mockEvents = [
-  { id: 1, title: 'Meeting with Client', date: '2023-11-15', time: '10:00 AM' },
-  { id: 2, title: 'Project Deadline', date: '2023-11-20', time: '5:00 PM' },
-  { id: 3, title: 'Team Lunch', date: '2023-11-22', time: '1:00 PM' },
-];
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const CELL_SIZE = 'h-10 w-10';
 
-export default function ScheduleCalendar() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+const formatDate = (date) => date.toISOString().split('T')[0];
+const isSameDay = (a, b) => formatDate(a) === formatDate(b);
+const isSameMonth = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+const startOfMonth = (date) => new Date(date.getFullYear(), date.getMonth(), 1);
+const endOfMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0);
+const startOfWeek = (date) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() - d.getDay());
+  return d;
+};
+const endOfWeek = (date) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + (6 - d.getDay()));
+  return d;
+};
+const addDays = (date, days) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+};
 
-  const filteredEvents = mockEvents.filter(event => {
-    const eventDate = new Date(event.date);
-    return eventDate.toDateString() === selectedDate.toDateString();
-  });
+const MonthGrid = ({ date, events, onDateClick }) => {
+  const startOfMonthDate = startOfMonth(date);
+  const endOfMonthDate = endOfMonth(date);
+  const startOfGridDate = startOfWeek(startOfMonthDate);
+  const endOfGridDate = endOfWeek(endOfMonthDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const weeks = useMemo(() => {
+    const weeks = [];
+    let current = new Date(startOfGridDate);
+    while (current <= endOfGridDate) {
+      const week = [];
+      for (let i = 0; i < 7; i++) {
+        const dayEvents = events.filter(event => {
+          const eventStart = new Date(event.start);
+          const eventEnd = new Date(event.end);
+          return isSameDay(current, eventStart) ||
+            (eventStart < current && eventEnd > current);
+        });
+        week.push({
+          date: new Date(current),
+          isCurrentMonth: isSameMonth(current, startOfMonthDate),
+          isToday: isSameDay(current, today),
+          events: dayEvents
+        });
+        current = addDays(current, 1);
+      }
+      weeks.push(week);
+    }
+    return weeks;
+  }, [date, events]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="w-full sticky top-0 z-40 bg-surface border-b border-border flex justify-between items-center px-margin py-md">
-        <div className="flex items-center gap-4">
-          <button className="active:scale-95 transition-transform p-1 -ml-1 text-on-surface-variant">
-            <span className="material-symbols-outlined">arrow_back</span>
-          </button>
-          <h1 className="font-heading-md text-heading-md text-on-surface">Jadwal Kalender</h1>
+    <div className="grid grid-cols-7 gap-px bg-border">
+      {WEEKDAYS.map(day => (
+        <div key={day} className={`${CELL_SIZE} flex items-center justify-center font-medium text-tx-secondary`}>
+          {day}
         </div>
-        <div className="w-6"></div>
-      </header>
-      <main className="px-margin pt-md pb-32 max-w-md mx-auto space-y-md">
-        <DatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
-        <div className="bg-surface border border-border rounded-lg p-lg space-y-md">
-          <h2 className="font-heading-sm text-heading-sm text-on-surface">Acara Hari Ini</h2>
-          {filteredEvents.length > 0 ? (
-            <ul className="space-y-md">
-              {filteredEvents.map(event => (
-                <li key={event.id} className="flex items-center gap-md p-md bg-surface-container-lowest rounded-lg">
-                  <div className="bg-primary p-2 rounded-lg flex items-center justify-center">
-                    <span className="material-symbols-outlined text-on-primary">event</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-body-base font-bold text-on-surface">{event.title}</span>
-                    <span className="font-body-base text-on-surface-variant">{event.time}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-md">
-              <span className="material-symbols-outlined text-on-surface-variant text-[48px]">event_busy</span>
-              <p className="font-body-base text-on-surface-variant mt-2">Tidak ada acara untuk hari ini</p>
+      ))}
+      {weeks.map((week, weekIdx) => (
+        week.map((day, dayIdx) => (
+          <button
+            key={`${weekIdx}-${dayIdx}`}
+            className={`${CELL_SIZE} flex flex-col items-center justify-start p-1 gap-1 bg-surface hover:bg-bg-canvas transition-colors ${!day.isCurrentMonth ? 'opacity-50' : ''} ${day.isToday ? 'border border-accent' : ''}`}
+            onClick={() => onDateClick(day.date)}
+          >
+            <div className={`text-sm ${day.isToday ? 'text-accent' : 'text-tx-primary'}`}>
+              {day.date.getDate()}
             </div>
-          )}
+            {day.events.slice(0, 2).map((event, i) => (
+              <div key={i} className="w-full h-1 rounded bg-accent opacity-80" />
+            ))}
+            {day.events.length > 2 && (
+              <div className="text-xs text-tx-secondary">+{day.events.length - 2}</div>
+            )}
+          </button>
+        ))
+      ))}
+    </div>
+  );
+};
+
+export default function ScheduleCalendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getEvents().then(setEvents);
+  }, []);
+
+  const goToToday = () => setCurrentDate(new Date());
+  const goToPrevMonth = () => setCurrentDate(prev => {
+    const d = new Date(prev);
+    d.setMonth(d.getMonth() - 1);
+    return d;
+  });
+  const goToNextMonth = () => setCurrentDate(prev => {
+    const d = new Date(prev);
+    d.setMonth(d.getMonth() + 1);
+    return d;
+  });
+
+  const handleDateClick = (date) => {
+    navigate(`/schedule?date=${formatDate(date)}`);
+  };
+
+  return (
+    <div className="flex flex-col gap-4 p-4">
+      <div className="flex items-center justify-between">
+        <button onClick={goToPrevMonth} className="p-2 rounded-full hover:bg-surface">
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <div className="text-lg font-medium">
+          {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
         </div>
-      </main>
+        <button onClick={goToNextMonth} className="p-2 rounded-full hover:bg-surface">
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+      <button onClick={goToToday} className="text-sm text-tx-secondary hover:text-tx-primary self-start">
+        Today
+      </button>
+      <MonthGrid date={currentDate} events={events} onDateClick={handleDateClick} />
     </div>
   );
 }
