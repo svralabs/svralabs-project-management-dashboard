@@ -1,22 +1,25 @@
 {
   "project_name": "svralabs-project-management-dashboard",
-  "architecture_summary": "Modular React app. Pages in src/pages/. Router use React Router. Shared UI in src/components/. State: local component state, no global state manager yet. CSS: Tailwind. API calls: fetch. Auth: JWT in httpOnly cookie. Ponytail: no SSR, add when SEO needed. No i18n, add when multi-language requested.",
+  "architecture_summary": "Modular React SPA. Pages in src/pages/. Shared components in src/components/. React Router v6 for navigation. Tailwind CSS for styling. No state management library (use React context for global state). API client in src/api/.",
   "tickets": [
     {
       "id": "TASK-001",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build WelcomeScreen page component",
-      "source_screen": "welcome_screen",
-      "description": "Convert Stitch welcome_screen to React. Static page. No auth. Include hero section, CTA buttons. Responsive. Match design 1:1.",
+      "title": "Build Beranda (Home) page component",
+      "source_screen": "beranda_home",
+      "description": "Convert Stitch beranda_home screen to React. Extract reusable components (HeroBanner, ProductCard, EventCard). Use Tailwind for styling. Match design pixel-perfect.",
       "target_files": [
-        "src/pages/WelcomeScreen.jsx"
+        "src/pages/Beranda.jsx",
+        "src/components/HeroBanner.jsx",
+        "src/components/ProductCard.jsx",
+        "src/components/EventCard.jsx"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match Stitch design",
-        "Mobile/desktop responsive",
-        "No console errors",
-        "CTA buttons link to /beranda (temporary # for now)"
+        "Page render without errors",
+        "All elements match Stitch design",
+        "Responsive behavior preserved",
+        "Reusable components extracted"
       ],
       "status": "DONE"
     },
@@ -24,18 +27,19 @@
       "id": "TASK-002",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Login page component",
-      "source_screen": "masuk",
-      "description": "Convert Stitch masuk screen to React. Form: email, password. Validation: required fields, email format. Submit: POST /api/auth/login. Success: redirect /beranda. Error: show inline. Password toggle visibility.",
+      "title": "Build Masuk (Login) and Daftar Akun (Register) pages",
+      "source_screen": "masuk, daftar_akun",
+      "description": "Create login and registration pages. Form validation for email, password, phone. Error states for invalid inputs. Success redirect to Beranda.",
       "target_files": [
-        "src/pages/Login.jsx"
+        "src/pages/Masuk.jsx",
+        "src/pages/DaftarAkun.jsx",
+        "src/components/AuthForm.jsx"
       ],
       "acceptance_criteria": [
-        "Form validation match design",
-        "Error messages match Stitch",
-        "Password toggle work",
-        "Submit trigger API call",
-        "Redirect on success"
+        "Forms submit to mock API endpoint",
+        "Validation errors display",
+        "Success redirect works",
+        "Design matches Stitch"
       ],
       "status": "DONE"
     },
@@ -43,18 +47,19 @@
       "id": "TASK-003",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Register page component",
-      "source_screen": "daftar_akun",
-      "description": "Convert Stitch daftar_akun screen to React. Form: name, email, password, confirm password. Validation: required, email format, password match. Submit: POST /api/auth/register. Success: redirect /beranda. Error: show inline.",
+      "title": "Build Detail Produk (Product Detail) and Detail Event Katalog (Event Detail) pages",
+      "source_screen": "detail_produk, detail_event_katalog",
+      "description": "Product and event detail pages. Dynamic content from mock API. Add to cart/button states. Image gallery component.",
       "target_files": [
-        "src/pages/Register.jsx"
+        "src/pages/DetailProduk.jsx",
+        "src/pages/DetailEventKatalog.jsx",
+        "src/components/ImageGallery.jsx"
       ],
       "acceptance_criteria": [
-        "Form validation match design",
-        "Password match check",
-        "Error messages match Stitch",
-        "Submit trigger API call",
-        "Redirect on success"
+        "Dynamic content renders",
+        "Image gallery functional",
+        "Add to cart button states work",
+        "Design matches Stitch"
       ],
       "status": "DONE"
     },
@@ -62,18 +67,23 @@
       "id": "TASK-004",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Home page component",
-      "source_screen": "beranda_home",
-      "description": "Convert Stitch beranda_home screen to React. Auth required. Fetch user data, recent orders, featured products. Carousel: auto-rotate, pause on hover. Product cards: link to /detail-produk/:id. Responsive grid.",
+      "title": "Build Pesanan Saya (My Orders) flow",
+      "source_screen": "daftar_pesanan_saya, pesanan_saya_order_review, pesanan_berhasil_success, detail_pesanan_transaction_detail, ajukan_pembatalan_cancellation_request",
+      "description": "Order listing, review, success, detail, and cancellation request pages. Order status badges. Cancellation form with validation.",
       "target_files": [
-        "src/pages/Home.jsx"
+        "src/pages/DaftarPesananSaya.jsx",
+        "src/pages/PesananSayaOrderReview.jsx",
+        "src/pages/PesananBerhasilSuccess.jsx",
+        "src/pages/DetailPesananTransactionDetail.jsx",
+        "src/pages/AjukanPembatalanCancellationRequest.jsx",
+        "src/components/OrderStatusBadge.jsx",
+        "src/components/CancellationForm.jsx"
       ],
       "acceptance_criteria": [
-        "Auth guard redirect to /masuk if no token",
-        "Data fetch from /api/home",
-        "Carousel match design behavior",
-        "Product cards link correctly",
-        "Mobile/desktop responsive"
+        "Order list renders with status badges",
+        "Order review flow works",
+        "Cancellation form submits",
+        "Design matches Stitch"
       ],
       "status": "DONE"
     },
@@ -81,18 +91,20 @@
       "id": "TASK-005",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Product Detail page component",
-      "source_screen": "detail_produk",
-      "description": "Convert Stitch detail_produk screen to React. Auth required. Fetch product data from /api/products/:id. Image gallery: thumbnails, main image swap. Add to cart: quantity selector, button. Related products: horizontal scroll. Responsive.",
+      "title": "Build Upload Bukti Pembayaran (Payment Proof) and Schedule Calendar pages",
+      "source_screen": "upload_bukti_pembayaran, schedule_calendar",
+      "description": "Payment proof upload page with file validation. Calendar page for event scheduling. Date picker component.",
       "target_files": [
-        "src/pages/ProductDetail.jsx"
+        "src/pages/UploadBuktiPembayaran.jsx",
+        "src/pages/ScheduleCalendar.jsx",
+        "src/components/FileUpload.jsx",
+        "src/components/DatePicker.jsx"
       ],
       "acceptance_criteria": [
-        "Auth guard redirect to /masuk if no token",
-        "Data fetch from /api/products/:id",
-        "Image gallery work",
-        "Quantity selector min 1, max stock",
-        "Add to cart trigger API call"
+        "File upload validates type/size",
+        "Calendar displays events",
+        "Date selection works",
+        "Design matches Stitch"
       ],
       "status": "DONE"
     },
@@ -100,18 +112,19 @@
       "id": "TASK-006",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Order List page component",
-      "source_screen": "daftar_pesanan_saya",
-      "description": "Convert Stitch daftar_pesanan_saya screen to React. Auth required. Fetch orders from /api/orders. Tabs: all, processing, completed, cancelled. Order cards: status badge, date, total, detail link. Pagination: 10 items/page. Responsive.",
+      "title": "Build Notifikasi (Notifications) and Admin Dashboard Overview pages",
+      "source_screen": "notifikasi_notifications, admin_dashboard_overview",
+      "description": "Notifications page with read/unread states. Admin dashboard with stats and recent activity. Notification badge component.",
       "target_files": [
-        "src/pages/OrderList.jsx"
+        "src/pages/Notifikasi.jsx",
+        "src/pages/AdminDashboardOverview.jsx",
+        "src/components/NotificationBadge.jsx",
+        "src/components/StatsCard.jsx"
       ],
       "acceptance_criteria": [
-        "Auth guard redirect to /masuk if no token",
-        "Data fetch from /api/orders",
-        "Tabs filter orders correctly",
-        "Order cards match design",
-        "Pagination work"
+        "Notifications mark as read",
+        "Admin stats render",
+        "Design matches Stitch"
       ],
       "status": "DONE"
     },
@@ -119,18 +132,17 @@
       "id": "TASK-007",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Order Detail page component",
-      "source_screen": "detail_pesanan_transaction_detail",
-      "description": "Convert Stitch detail_pesanan_transaction_detail screen to React. Auth required. Fetch order from /api/orders/:id. Show: order info, items, payment proof upload, cancellation request button. Payment proof: upload image, preview, submit. Cancellation: link to /ajukan-pembatalan/:id.",
+      "title": "Build Welcome Screen page",
+      "source_screen": "welcome_screen",
+      "description": "Welcome screen with onboarding flow. Language selection. Get started button. Background image/video component.",
       "target_files": [
-        "src/pages/OrderDetail.jsx"
+        "src/pages/WelcomeScreen.jsx",
+        "src/components/BackgroundMedia.jsx"
       ],
       "acceptance_criteria": [
-        "Auth guard redirect to /masuk if no token",
-        "Data fetch from /api/orders/:id",
-        "Payment proof upload work",
-        "Cancellation button link correctly",
-        "Mobile/desktop responsive"
+        "Onboarding flow works",
+        "Language selection functional",
+        "Design matches Stitch"
       ],
       "status": "DONE"
     },
@@ -140,22 +152,23 @@
       "model": "hermes-auto",
       "title": "App shell, navigation bar, and router wiring (src/App.jsx)",
       "source_screen": "",
-      "description": "Create app shell. Navigation bar: logo, home, orders, notifications, account. Router: React Router v6. Routes: /, /masuk, /daftar, /beranda, /detail-produk/:id, /pesanan-saya, /pesanan/:id, /ajukan-pembatalan/:id, /notifikasi, /admin. Auth guard: redirect to /masuk if no token. 404 page. Responsive navbar: collapse to hamburger on mobile.",
+      "description": "Main app shell with responsive navigation. React Router v6 setup. Route configuration for all pages. Auth guard for protected routes. 404 page.",
       "target_files": [
         "src/App.jsx",
-        "src/components/Navbar.jsx",
-        "src/components/NotFound.jsx"
+        "src/components/NavBar.jsx",
+        "src/components/AuthGuard.jsx",
+        "src/pages/NotFound.jsx"
       ],
       "acceptance_criteria": [
-        "All routes work",
-        "Auth guard redirect correctly",
-        "Navbar match design",
-        "Mobile hamburger work",
-        "404 page show on unknown routes"
+        "All routes load correct pages",
+        "Navigation works",
+        "Auth guard redirects unauthenticated users",
+        "404 page displays for unknown routes",
+        "Responsive behavior preserved"
       ],
       "status": "DONE"
     }
   ],
   "status": "IN_PROGRESS",
-  "updated_at": "2026-08-20 12:56:35"
+  "updated_at": "2026-08-20 14:38:31"
 }
