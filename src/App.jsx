@@ -1,183 +1,151 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import AdminDashboardOverview from './pages/AdminDashboardOverview';
-import AdminEventManagementScreen from './pages/AdminEventManagementScreen';
-import AdminCustomerManagement from './pages/AdminCustomerManagement';
-import DashboardHomeTechnicalHighContrast1 from './pages/DashboardHomeTechnicalHighContrast1';
-import DashboardHomeTechnicalHighContrast2 from './pages/DashboardHomeTechnicalHighContrast2';
-import DashboardHomeRoundedDataPrimitives from './pages/DashboardHomeRoundedDataPrimitives';
-import DashboardHomeBalancedVariation2 from './pages/DashboardHomeBalancedVariation2';
-import CustomerSegmentAnalyticsEnterpriseCore from './pages/CustomerSegmentAnalyticsEnterpriseCore';
-import ComponentShowcaseTechnicalTokens from './pages/ComponentShowcaseTechnicalTokens';
-import DashboardHomeBalancedVariation1 from './pages/DashboardHomeBalancedVariation1';
-import DashboardHomeSharpDataBars from './pages/DashboardHomeSharpDataBars';
-import Screen1DashboardHome from './pages/Screen1DashboardHome';
-import Screen2HomeworkSearch from './pages/Screen2HomeworkSearch';
-import Screen3CalendarExamsSchedule from './pages/Screen3CalendarExamsSchedule';
-import DetailTransaksi from './pages/DetailTransaksi';
-import SugidevServicesProjects from './pages/SugidevServicesProjects';
-import ProjectInquiryCleanBackground from './pages/ProjectInquiryCleanBackground';
-import DevosEngineeringDashboard from './pages/DevosEngineeringDashboard';
-import DuolingoLearningDashboard from './pages/DuolingoLearningDashboard';
-import PromosManagementSugiAdmin2 from './pages/PromosManagementSugiAdmin2';
-import BookingsManagementSugiAdmin from './pages/BookingsManagementSugiAdmin';
-import ServicesManagementSugiAdmin from './pages/ServicesManagementSugiAdmin';
-import UsersManagementSugiAdmin from './pages/UsersManagementSugiAdmin';
-import OrderHistoryStatus from './pages/OrderHistoryStatus';
-import ShoppingCart from './pages/ShoppingCart';
-import AiProfitCalculatorBudgetingPanel2 from './pages/AiProfitCalculatorBudgetingPanel2';
-import JastipLandingPage from './pages/JastipLandingPage';
-import PaymentCancellationGateway from './pages/PaymentCancellationGateway';
-import ProductCatalog from './pages/ProductCatalog';
-import ShopperListWorkspace from './pages/ShopperListWorkspace';
-import AiProfitCalculatorBudgetingPanel1 from './pages/AiProfitCalculatorBudgetingPanel1';
-import AdminInvoiceFeesManager from './pages/AdminInvoiceFeesManager';
-import AdminMasterDashboard from './pages/AdminMasterDashboard';
-import CustomerCheckoutForm from './pages/CustomerCheckoutForm';
-import AdminPaymentCancellationDashboard from './pages/AdminPaymentCancellationDashboard';
-import WellnessDashboard from './pages/WellnessDashboard';
-import AdminEventCatalogManagement from './pages/AdminEventCatalogManagement';
-import DetailEventKatalog from './pages/DetailEventKatalog';
-import BerandaHome from './pages/BerandaHome';
-import NotifikasiNotifications from './pages/NotifikasiNotifications';
-import WelcomeScreen from './pages/WelcomeScreen';
-import DaftarAkun from './pages/DaftarAkun';
-import UploadBuktiPembayaran from './pages/UploadBuktiPembayaran';
-import ScheduleCalendar from './pages/ScheduleCalendar';
-import PesananBerhasilSuccess from './pages/PesananBerhasilSuccess';
-import DetailPesananTransactionDetail from './pages/DetailPesananTransactionDetail';
-import DetailProduk from './pages/DetailProduk';
-import AjukanPembatalanCancellationRequest from './pages/AjukanPembatalanCancellationRequest';
-import DaftarPesananSaya from './pages/DaftarPesananSaya';
-import PesananSayaOrderReview from './pages/PesananSayaOrderReview';
-import Masuk from './pages/Masuk';
-import DashboardHome from './pages/DashboardHome';
+import React from 'react'
+
+const IMG = {
+  avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCl6UIpKBQfEF9dZKZExYwWmvQtho7OaHCybsQO8TKFG2j39X-4C5npFQg3VMi2ZRpEDztkXwReqmdDTCYbWpCz6jFptrC89H1FKFW_KSmqVinbG7-g77DCuTz9Zooc3fsjyLiAFMjA8OlL1RHONwQCfbx2YzYmBWdzlJ-wTYrYYGpeLmukycHK-M_6QdGx-5kpxZXS-LHsTONv0UQG2WbzvC17-HvTg-FAJpbIqOktjM8SSAcLUXHz',
+  paris: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCQ7pfFOwMsHeVymR3qvJ52Ei_E6IqJnT619wbeVF_uKKXsgpFo93xiktlC82rzobLzvOB7D-WkJnXxCaT77NqO9EpR1J97RBVBnKkVvR6Jb5Balqe4B7RWi15MYNRHutMNKjOZTkgJE3mF0EqLcACK1CIJtIEGYkOYHF-6bVzWFb2S0GO2VGK6lW_Z0x7Accai5R2q84n9YMEZp5KuaZ7sXfVfPLU3OX73pO9IrFg_sA3uHsDovdJJ',
+  ginza: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDIHhy6ORaX0NydEs_giswAzAMEJFDm0PHLT9ipk6k-xqtsQWyRjU80M-YvsUqYSenTQBwvrD8DkJsLueQQvQyJPggasEFNKXkmVDi_rhhfTV7a_V6siUTDVLS341SD2iLU2ExZL2EHHKoWObO-V1Woezcg8dDUeAsrQ5Fbtm8lucYrws7SWLMQinGZbw8mVBt8fNGV0pGuDjYN-1gDYhw4j-Go9zxkOlhvCbTqgEB1n7dA-CEoOAud',
+  skincare: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGVFojt6YBBRXMzDuYe4hnab4NwciHWvgkj_ortJRAuekFe0-pRK5UcZTzB0w7hrOgNa0zUgjbdwdRD1E1Mlcr8CZYmLvmZLGVqz7129VtsLbWsOlu3Odq1VyFSlHRgLq5d3wBh7eQA2hx4gY5gGqU2Ubd-8KjydSdue_6p92j85BkksdD7xrGo4en4_ymNSuw-STe3RZi6Sh7OCTQ9ql_BCfUazmQ1xlHn8lvIOjD85jI6MsWisY3',
+  handbag: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAAQAbGYryrAak_YB1Xb4XSwIXziYhKEKU7X-Vxzebc5fSZfAbyOgkzjntWPQZCjYb-z08h7djksLMSbAF7quph1XfFlRerzk38P-wbu7XOk7STnigvaCb_Brkfgn8EfBricqE6ib2egezPM2LMmGfbuGa2LaGZ1VBVUSbQKzLkJ0JwYmzclpHDXLnLItXH2M0HX9n7du4CTSROn2q9bZssTbRW3hNHH2ngKk9kObAz2AypqpzQTfAI',
+  sneaker: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCDf5lNCnFL4xQj0fGoDMDM9dw60D8xv0HJIIFnKYhe9CEtOm4VijUKf-58Qhi7Sxw_6UqjEKZ2ROUvxeN2zLQ6ez5CjO2Ev9A90ZX8jguW_CRHgx3dSh7NmYdsONtmXb8qvwK_1R4582b8ranA4vxbbMRRLwqOBTDGyhEhVGtCv8LxRdMaJe-Wp5cqPHRoSkACajDnfm-bH4Hs2fmiLUy9T5Bzb0DOt6yGTO1V7Fmi0uQJV1UxgAgZ',
+  choco: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAz-5NIR6g3RohT3PfWJkS2MCOg-MNKrRUmJ7xTkejNdgUBCJrwo9Cbuf1iH0FMPWzwxWylkYVkQ9IImZweyCqzKttKyD2QZvnVMTt_xobSUAUj-H6HlX3SywhQYEMuBWdgO5pkW0A8XpFhU8w4CtWD8GAIAU7ZHY2P8vrMq72-YhOAyOq7H_fwjpRd0AFvf_40Uj9bcSkQXy9bLeffWJNJWruiCL8dyye3Q8Lh17gfiswUBef1Pe0M',
+}
+
+const EVENTS = [
+  { img: IMG.paris, asBg: false, badge: 'Berakhir 3 hari lagi', title: 'Paris Luxury Haul', by: 'Oleh: Personal Shopper Pro' },
+  { img: IMG.ginza, asBg: true, badge: 'Berakhir 1 hari lagi', title: 'Ginza Tokyo Pick', by: 'Oleh: Tokyo Curator' },
+]
+const CHIPS = ['Semua', 'Bayi', 'Skincare', 'Fashion', 'Elektronik', 'Makanan']
+const PRODUCTS = [
+  { img: IMG.skincare, asBg: false, name: 'Premium Skincare Set', price: 'Rp 1.200.000', fee: '+Fee 10%' },
+  { img: IMG.handbag, asBg: false, name: 'Designer Handbag', price: 'Rp 3.500.000', fee: '+Fee 10%' },
+  { img: IMG.sneaker, asBg: true, name: 'Limited Edition Sneaker', price: 'Rp 2.850.000', fee: '+Fee 12%' },
+  { img: IMG.choco, asBg: true, name: 'Gourmet Chocolate Box', price: 'Rp 450.000', fee: '+Fee 8%' },
+]
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
-        {/* Navigation Header for Multi-Screen Stitch Pages */}
-        <header className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
-            <span className="font-bold text-sm tracking-wide text-white capitalize">project-management-dashboard</span>
+    <div className="bg-background text-on-surface pb-24">
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full z-50 bg-surface border-b border-border flex justify-between items-center px-gutter py-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
+            <img className="w-full h-full object-cover" src={IMG.avatar} alt="avatar" />
           </div>
-          <nav className="flex items-center space-x-2 overflow-x-auto py-1">
-            <Link to="/" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Dashboard Overview</Link>
-            <Link to="/admin-event-management-screen" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Event Management Screen</Link>
-            <Link to="/admin-customer-management" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Customer Management</Link>
-            <Link to="/dashboard-home-technical-high-contrast-1" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home Technical High Contrast 1</Link>
-            <Link to="/dashboard-home-technical-high-contrast-2" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home Technical High Contrast 2</Link>
-            <Link to="/dashboard-home-rounded-data-primitives" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home Rounded Data Primitives</Link>
-            <Link to="/dashboard-home-balanced-variation-2" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home Balanced Variation 2</Link>
-            <Link to="/customer-segment-analytics-enterprise-core" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Customer Segment Analytics Enterprise Core</Link>
-            <Link to="/component-showcase-technical-tokens" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Component Showcase Technical Tokens</Link>
-            <Link to="/dashboard-home-balanced-variation-1" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home Balanced Variation 1</Link>
-            <Link to="/dashboard-home-sharp-data-bars" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home Sharp Data Bars</Link>
-            <Link to="/screen-1-dashboard-home" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Screen 1 Dashboard Home</Link>
-            <Link to="/screen-2-homework-search" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Screen 2 Homework Search</Link>
-            <Link to="/screen-3-calendar-exams-schedule" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Screen 3 Calendar Exams Schedule</Link>
-            <Link to="/detail-transaksi" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Detail Transaksi</Link>
-            <Link to="/sugidev-services-projects" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Sugidev Services Projects</Link>
-            <Link to="/project-inquiry-clean-background" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Project Inquiry Clean Background</Link>
-            <Link to="/devos-engineering-dashboard" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Devos Engineering Dashboard</Link>
-            <Link to="/duolingo-learning-dashboard" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Duolingo Learning Dashboard</Link>
-            <Link to="/promos-management-sugi-admin-2" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Promos Management Sugi Admin 2</Link>
-            <Link to="/bookings-management-sugi-admin" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Bookings Management Sugi Admin</Link>
-            <Link to="/services-management-sugi-admin" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Services Management Sugi Admin</Link>
-            <Link to="/users-management-sugi-admin" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Users Management Sugi Admin</Link>
-            <Link to="/order-history-status" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Order History Status</Link>
-            <Link to="/shopping-cart" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Shopping Cart</Link>
-            <Link to="/ai-profit-calculator-budgeting-panel-2" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Ai Profit Calculator Budgeting Panel 2</Link>
-            <Link to="/jastip-landing-page" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Jastip Landing Page</Link>
-            <Link to="/payment-cancellation-gateway" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Payment Cancellation Gateway</Link>
-            <Link to="/product-catalog" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Product Catalog</Link>
-            <Link to="/shopper-list-workspace" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Shopper List Workspace</Link>
-            <Link to="/ai-profit-calculator-budgeting-panel-1" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Ai Profit Calculator Budgeting Panel 1</Link>
-            <Link to="/admin-invoice-fees-manager" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Invoice Fees Manager</Link>
-            <Link to="/admin-master-dashboard" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Master Dashboard</Link>
-            <Link to="/customer-checkout-form" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Customer Checkout Form</Link>
-            <Link to="/admin-payment-cancellation-dashboard" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Payment Cancellation Dashboard</Link>
-            <Link to="/wellness-dashboard" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Wellness Dashboard</Link>
-            <Link to="/admin-event-catalog-management" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Admin Event Catalog Management</Link>
-            <Link to="/detail-event-katalog" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Detail Event Katalog</Link>
-            <Link to="/beranda-home" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Beranda Home</Link>
-            <Link to="/notifikasi-notifications" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Notifikasi Notifications</Link>
-            <Link to="/welcome-screen" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Welcome Screen</Link>
-            <Link to="/daftar-akun" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Daftar Akun</Link>
-            <Link to="/upload-bukti-pembayaran" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Upload Bukti Pembayaran</Link>
-            <Link to="/schedule-calendar" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Schedule Calendar</Link>
-            <Link to="/pesanan-berhasil-success" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Pesanan Berhasil Success</Link>
-            <Link to="/detail-pesanan-transaction-detail" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Detail Pesanan Transaction Detail</Link>
-            <Link to="/detail-produk" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Detail Produk</Link>
-            <Link to="/ajukan-pembatalan-cancellation-request" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Ajukan Pembatalan Cancellation Request</Link>
-            <Link to="/daftar-pesanan-saya" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Daftar Pesanan Saya</Link>
-            <Link to="/pesanan-saya-order-review" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Pesanan Saya Order Review</Link>
-            <Link to="/masuk" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Masuk</Link>
-            <Link to="/dashboard-home" className="px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-white/10 transition">Dashboard Home</Link>
-          </nav>
-        </header>
+          <span className="font-heading-md-mobile text-heading-md-mobile text-on-surface">Halo, Rio</span>
+        </div>
+        <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-150">
+          <span className="material-symbols-outlined text-primary">notifications</span>
+        </button>
+      </header>
 
-        {/* Dynamic Routed Pages */}
-        <main className="flex-1 w-full">
-          <Routes>
-          <Route path="/" element={<AdminDashboardOverview />} />
-          <Route path="/admin-event-management-screen" element={<AdminEventManagementScreen />} />
-          <Route path="/admin-customer-management" element={<AdminCustomerManagement />} />
-          <Route path="/dashboard-home-technical-high-contrast-1" element={<DashboardHomeTechnicalHighContrast1 />} />
-          <Route path="/dashboard-home-technical-high-contrast-2" element={<DashboardHomeTechnicalHighContrast2 />} />
-          <Route path="/dashboard-home-rounded-data-primitives" element={<DashboardHomeRoundedDataPrimitives />} />
-          <Route path="/dashboard-home-balanced-variation-2" element={<DashboardHomeBalancedVariation2 />} />
-          <Route path="/customer-segment-analytics-enterprise-core" element={<CustomerSegmentAnalyticsEnterpriseCore />} />
-          <Route path="/component-showcase-technical-tokens" element={<ComponentShowcaseTechnicalTokens />} />
-          <Route path="/dashboard-home-balanced-variation-1" element={<DashboardHomeBalancedVariation1 />} />
-          <Route path="/dashboard-home-sharp-data-bars" element={<DashboardHomeSharpDataBars />} />
-          <Route path="/screen-1-dashboard-home" element={<Screen1DashboardHome />} />
-          <Route path="/screen-2-homework-search" element={<Screen2HomeworkSearch />} />
-          <Route path="/screen-3-calendar-exams-schedule" element={<Screen3CalendarExamsSchedule />} />
-          <Route path="/detail-transaksi" element={<DetailTransaksi />} />
-          <Route path="/sugidev-services-projects" element={<SugidevServicesProjects />} />
-          <Route path="/project-inquiry-clean-background" element={<ProjectInquiryCleanBackground />} />
-          <Route path="/devos-engineering-dashboard" element={<DevosEngineeringDashboard />} />
-          <Route path="/duolingo-learning-dashboard" element={<DuolingoLearningDashboard />} />
-          <Route path="/promos-management-sugi-admin-2" element={<PromosManagementSugiAdmin2 />} />
-          <Route path="/bookings-management-sugi-admin" element={<BookingsManagementSugiAdmin />} />
-          <Route path="/services-management-sugi-admin" element={<ServicesManagementSugiAdmin />} />
-          <Route path="/users-management-sugi-admin" element={<UsersManagementSugiAdmin />} />
-          <Route path="/order-history-status" element={<OrderHistoryStatus />} />
-          <Route path="/shopping-cart" element={<ShoppingCart />} />
-          <Route path="/ai-profit-calculator-budgeting-panel-2" element={<AiProfitCalculatorBudgetingPanel2 />} />
-          <Route path="/jastip-landing-page" element={<JastipLandingPage />} />
-          <Route path="/payment-cancellation-gateway" element={<PaymentCancellationGateway />} />
-          <Route path="/product-catalog" element={<ProductCatalog />} />
-          <Route path="/shopper-list-workspace" element={<ShopperListWorkspace />} />
-          <Route path="/ai-profit-calculator-budgeting-panel-1" element={<AiProfitCalculatorBudgetingPanel1 />} />
-          <Route path="/admin-invoice-fees-manager" element={<AdminInvoiceFeesManager />} />
-          <Route path="/admin-master-dashboard" element={<AdminMasterDashboard />} />
-          <Route path="/customer-checkout-form" element={<CustomerCheckoutForm />} />
-          <Route path="/admin-payment-cancellation-dashboard" element={<AdminPaymentCancellationDashboard />} />
-          <Route path="/wellness-dashboard" element={<WellnessDashboard />} />
-          <Route path="/admin-event-catalog-management" element={<AdminEventCatalogManagement />} />
-          <Route path="/detail-event-katalog" element={<DetailEventKatalog />} />
-          <Route path="/beranda-home" element={<BerandaHome />} />
-          <Route path="/notifikasi-notifications" element={<NotifikasiNotifications />} />
-          <Route path="/welcome-screen" element={<WelcomeScreen />} />
-          <Route path="/daftar-akun" element={<DaftarAkun />} />
-          <Route path="/upload-bukti-pembayaran" element={<UploadBuktiPembayaran />} />
-          <Route path="/schedule-calendar" element={<ScheduleCalendar />} />
-          <Route path="/pesanan-berhasil-success" element={<PesananBerhasilSuccess />} />
-          <Route path="/detail-pesanan-transaction-detail" element={<DetailPesananTransactionDetail />} />
-          <Route path="/detail-produk" element={<DetailProduk />} />
-          <Route path="/ajukan-pembatalan-cancellation-request" element={<AjukanPembatalanCancellationRequest />} />
-          <Route path="/daftar-pesanan-saya" element={<DaftarPesananSaya />} />
-          <Route path="/pesanan-saya-order-review" element={<PesananSayaOrderReview />} />
-          <Route path="/masuk" element={<Masuk />} />
-          <Route path="/dashboard-home" element={<DashboardHome />} />
-          <Route path="*" element={<AdminDashboardOverview />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
-  );
+      <main className="mt-20 px-gutter space-y-lg">
+        {/* Search */}
+        <div className="relative">
+          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+          <input className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-primary transition-all font-body-base" placeholder="Cari produk atau event" type="text" />
+        </div>
+
+        {/* Event Berlangsung */}
+        <section>
+          <div className="flex justify-between items-center mb-md">
+            <h2 className="font-heading-md-mobile text-heading-md-mobile">Event Berlangsung</h2>
+            <button className="text-primary font-label-caps text-label-caps">Lihat Semua</button>
+          </div>
+          <div className="flex gap-md overflow-x-auto no-scrollbar pb-2">
+            {EVENTS.map((e) => (
+              <div key={e.title} className="min-w-[280px] bg-surface rounded-xl border border-border overflow-hidden flex-shrink-0 transition-transform active:scale-[0.98]">
+                <div className="relative h-40">
+                  {e.asBg ? (
+                    <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${e.img}')` }} />
+                  ) : (
+                    <img className="w-full h-full object-cover" src={e.img} alt={e.title} />
+                  )}
+                  <div className="absolute top-3 left-3 bg-error-tint px-3 py-1 rounded-sm border border-error-container">
+                    <span className="text-error-text font-label-caps text-[10px] uppercase tracking-wider">{e.badge}</span>
+                  </div>
+                </div>
+                <div className="p-md flex justify-between items-center">
+                  <div>
+                    <h3 className="font-heading-md-mobile text-sm mb-1">{e.title}</h3>
+                    <p className="text-tx-secondary text-xs">{e.by}</p>
+                  </div>
+                  <button className="bg-primary text-on-primary px-4 py-2 rounded-full font-label-caps text-label-caps active:scale-90 transition-all">Lihat</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Category Chips */}
+        <section>
+          <div className="flex gap-sm overflow-x-auto no-scrollbar">
+            {CHIPS.map((c, i) => (
+              <button
+                key={c}
+                className={
+                  i === 0
+                    ? 'px-5 py-2 rounded-full bg-secondary-container text-primary font-label-caps text-label-caps border border-primary-container whitespace-nowrap active:scale-95 transition-all'
+                    : 'px-5 py-2 rounded-full bg-surface text-on-surface-variant font-label-caps text-label-caps border border-border whitespace-nowrap hover:bg-surface-container active:scale-95 transition-all'
+                }
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Katalog Populer */}
+        <section>
+          <h2 className="font-heading-md-mobile text-heading-md-mobile mb-md">Katalog Populer</h2>
+          <div className="grid grid-cols-2 gap-md">
+            {PRODUCTS.map((p) => (
+              <div key={p.name} className="bg-surface rounded-xl border border-border overflow-hidden flex flex-col active:scale-[0.97] transition-all">
+                <div className="relative aspect-square">
+                  {p.asBg ? (
+                    <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${p.img}')` }} />
+                  ) : (
+                    <img className="w-full h-full object-cover" src={p.img} alt={p.name} />
+                  )}
+                  <div className="absolute bottom-2 left-2 bg-success-tint px-2 py-0.5 rounded-sm border border-success-text/20">
+                    <span className="text-success-text font-label-caps text-[10px]">{p.fee}</span>
+                  </div>
+                </div>
+                <div className="p-sm flex flex-col flex-grow">
+                  <h4 className="font-body-base font-semibold text-on-surface line-clamp-1 mb-1">{p.name}</h4>
+                  <p className="text-primary font-heading-md-mobile text-sm">{p.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Ad Banner */}
+        <section className="relative rounded-xl overflow-hidden h-32 border border-border">
+          <div className="relative z-10 flex flex-col justify-center items-center h-full text-white bg-black/10 backdrop-blur-[2px]">
+            <h3 className="font-display text-lg">Promo Akhir Pekan</h3>
+            <p className="font-label-caps text-[10px] opacity-90 uppercase">Diskon Fee Titip Hingga 50%</p>
+            <button className="mt-2 bg-white text-primary px-4 py-1.5 rounded-full font-label-caps text-[10px] font-bold">Klaim Voucher</button>
+          </div>
+        </section>
+      </main>
+
+      {/* BottomNav */}
+      <nav className="fixed bottom-0 w-full z-50 bg-surface border-t border-border flex justify-around items-center px-4 py-2 h-16 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+        <a className="flex flex-col items-center justify-center bg-secondary-container text-primary rounded-xl px-4 py-1.5 transition-all" href="#">
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>home</span>
+          <span className="font-label-caps text-[10px] mt-0.5">Beranda</span>
+        </a>
+        {[
+          { icon: 'receipt_long', label: 'Pesanan' },
+          { icon: 'calendar_month', label: 'Kalender' },
+          { icon: 'person', label: 'Akun' },
+        ].map((n) => (
+          <a key={n.label} className="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-low transition-all active:scale-90 duration-200" href="#">
+            <span className="material-symbols-outlined">{n.icon}</span>
+            <span className="font-label-caps text-[10px] mt-0.5">{n.label}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  )
 }
